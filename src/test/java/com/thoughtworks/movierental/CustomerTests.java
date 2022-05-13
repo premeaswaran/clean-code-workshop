@@ -12,11 +12,6 @@ class CustomerTest {
     }
 
     @Test
-    public void shouldAddRentalToCustomerWhenAddRentalFunctionIsCalled(){
-        //TODO: Add test implementation
-    }
-
-    @Test
     public void shouldReturnProperStatementWhenStatementFunctionIsCalled() {
         Customer customer = new Customer("Mukilan");
         customer.addRental(new Rental(new Movie("Shawshank's Redemption", 0), 30));

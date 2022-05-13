@@ -6,6 +6,7 @@ import java.util.List;
 public class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
+    private int frequentRenterPoints = 0;
 
     public Customer(String name) {
         this.name = name;
@@ -21,20 +22,14 @@ public class Customer {
 
     public String statement() {
         double totalAmount = 0;
-        int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
         for (Rental rental : rentals) {
-            double thisAmount = rental.amount();
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if ((rental.getMovie().getPriceCode() == Movie.NEW_RELEASE)
-                    &&
-                    rental.getDaysRented() > 1) frequentRenterPoints++;
+            updateFrequentRenterPoints(rental);
 
             //show figures for this rental
             result += "\t" + rental.getMovie().getTitle() + "\t" +
-                    thisAmount + "\n";
-            totalAmount += thisAmount;
+                    rental.amount() + "\n";
+            totalAmount += rental.amount();
         }
 
         //add footer lines result
@@ -42,5 +37,12 @@ public class Customer {
         result += "You earned " + frequentRenterPoints
                 + " frequent renter points";
         return result;
+    }
+
+    private void updateFrequentRenterPoints(Rental rental) {
+        frequentRenterPoints++;
+        if ((rental.getMovie().getPriceCode() == Movie.NEW_RELEASE)
+                &&
+                rental.getDaysRented() > 1) frequentRenterPoints++;
     }
 }
